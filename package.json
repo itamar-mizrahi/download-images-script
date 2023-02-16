@@ -1,0 +1,33 @@
+{
+    "name": "image-downloader",
+    "version": "2.0.0",
+    "description": "A Node.js script to download all images from a website",
+    "main": "index.js",
+    "type": "module",
+    "dependencies": {
+        "cheerio": "^1.0.0-rc.12",
+        "node-fetch": "^3.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.12"
+    },
+    "scripts": {
+        "start": "node script.js",
+        "dev": "nodemon script.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/username/image-downloader.git"
+    },
+    "keywords": [
+        "node",
+        "image",
+        "downloader"
+    ],
+    "author": "Your Name <yourname@example.com>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/username/image-downloader/issues"
+    },
+    "homepage": "https://github.com/username/image-downloader#readme"
+}
