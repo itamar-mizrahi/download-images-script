@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download All Images</title>
+</head>
+<body>
+  <h1>Download All Images</h1>
+  <button id="download-btn">Download</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+  <script>
+    document.getElementById('download-btn').addEventListener('click', () => {
+      //get all the images on the webpage
+      const images = document.getElementsByTagName('img');
+      //create an anchor element to download the images
+      const link = document.createElement('a');
+      link.download = 'images.zip';
+      
+      //initialize the JSZip library to create a zip file of images
+      const zip = new JSZip();
+      
+      //loop through all the images and add them to the zip file
+      for (let i = 0; i < images.length; i++) {
+        const imageUrl = images[i].src;
+        const imageName = `image${i+1}.jpg`;
+        
+        //fetch the image and add it to the zip file
+        fetch(imageUrl)
+          .then(response => response.blob())
+          .then(blob => {
+            zip.file(imageName, blob, {binary: true});
+            //once all the images have been added, generate the zip file and download it
+            if (i === images.length - 1) {
+              zip.generateAsync({type:"blob"})
+                .then(content => {
+                  link.href = URL.createObjectURL(content);
+                  link.click();
+                });
+            }
+          });
+      }
+    });
+  </script>
+</body>
+</html>

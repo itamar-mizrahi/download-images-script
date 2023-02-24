@@ -1,27 +1,31 @@
-import fetch from 'node-fetch';
-import { load } from 'cheerio';
+import { get } from 'https';
 import { createWriteStream } from 'fs';
 import { basename, join } from 'path';
+import { load } from 'cheerio';
 
-const websiteUrl = 'https://www.github.com';
-const downloadDir = './downloads';
+const url = 'https://google.com'; // replace with your URL
+const downloadFolder = 'downloads'; // replace with the name of your download folder
 
-fetch(websiteUrl)
-  .then(response => response.text())
-  .then(html => {
+debugger;
+get(url, (response) => {
+  let html = '';
+
+  response.on('data', (chunk) => {
+    html += chunk;
+  });
+  response.on('end', () => {
     const $ = load(html);
-    const imageUrls = $('img').map((i, el) => $(el).attr('src')).get();
+    $('img').each((i, elem) => {
+      console.log(elem);
+      const imgUrl = $(elem).attr('src');
+      const imgName = basename(imgUrl);
+      const imgPath = join(__dirname, downloadFolder, imgName);
 
-    imageUrls.forEach(url => {
-      const filename = basename(url);
-      const filepath = join(downloadDir, filename);
-      const file = createWriteStream(filepath);
-
-      fetch(url).then(response => {
-        response.body.pipe(file);
+      get(imgUrl, (response) => {
+        response.pipe(createWriteStream(imgPath));
       });
     });
-  })
-  .catch(error => {
-    console.error(error);
   });
+}).on('error', (err) => {
+  console.log('Error:', err.message);
+});
