@@ -6,7 +6,6 @@ import { load } from 'cheerio';
 const url = 'https://google.com'; // replace with your URL
 const downloadFolder = 'downloads'; // replace with the name of your download folder
 
-debugger;
 get(url, (response) => {
   let html = '';
 
